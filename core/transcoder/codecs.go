@@ -502,6 +502,78 @@ func (c *VideoToolboxCodec) GetPresetForLevel(l int) string {
 	return preset
 }
 
+// RkmppCodec represents an instance of the Rkmpp codec.
+type RkmppCodec struct{}
+
+// Name returns the codec name.
+func (c *RkmppCodec) Name() string {
+	return "Rockchip RKMPP (H.264)"
+}
+
+// DisplayName returns the human readable name of the codec.
+func (c *RkmppCodec) DisplayName() string {
+	return "Rkmpp"
+}
+
+// GlobalFlags are the global flags used with this codec in the transcoder.
+func (c *RkmppCodec) GlobalFlags() string {
+//	var flags []string
+	//-hwaccel drm -hwaccel_device /dev/dri/renderD128 -c:v h264_rkmpp
+	flags := []string{
+		"-hwaccel", "rkmpp",
+		"-hwaccel_device", "/dev/dri/renderD128",
+		"-c:v", "h264_rkmpp",
+	}
+	return strings.Join(flags, " ")
+//	return ""
+}
+
+// PixelFormat is the pixel format required for this codec.
+func (c *RkmppCodec) PixelFormat() string {
+	return "yuv420p"
+}
+
+// Scaler is the scaler used for resizing the video in the transcoder.
+func (c *RkmppCodec) Scaler() string {
+	return ""
+}
+
+// ExtraFilters are the extra filters required for this codec in the transcoder.
+func (c *RkmppCodec) ExtraFilters() string {
+	return ""
+}
+
+// ExtraArguments are the extra arguments used with this codec in the transcoder.
+func (c *RkmppCodec) ExtraArguments() string {
+	return ""
+}
+
+// VariantFlags returns a string representing a single variant processed by this codec.
+func (c *RkmppCodec) VariantFlags(v *HLSVariant) string {
+	return "";
+}
+
+// GetPresetForLevel returns the string preset for this codec given an integer level.
+func (c *RkmppCodec) GetPresetForLevel(l int) string {
+	presetMapping := map[int]string{
+		0: "ultrafast",
+		1: "superfast",
+		2: "veryfast",
+		3: "faster",
+		4: "fast",
+	}
+
+	preset, ok := presetMapping[l]
+	if !ok {
+		defaultPreset := presetMapping[1]
+		log.Errorf("Invalid level for rkmpp preset %d, defaulting to %s", l, defaultPreset)
+		return defaultPreset
+	}
+
+	return preset
+}
+
+
 // GetCodecs will return the supported codecs available on the system.
 func GetCodecs(ffmpegPath string) []string {
 	codecs := make([]string, 0)
@@ -516,7 +588,7 @@ func GetCodecs(ffmpegPath string) []string {
 	response := string(out)
 	lines := strings.Split(response, "\n")
 	for _, line := range lines {
-		if strings.Contains(line, "H.264") {
+		if strings.Contains(line, "264") {
 			fields := strings.Fields(line)
 			codec := fields[1]
 			if _, supported := supportedCodecs[codec]; supported {
@@ -524,7 +596,6 @@ func GetCodecs(ffmpegPath string) []string {
 			}
 		}
 	}
-
 	return codecs
 }
 
@@ -542,7 +613,5 @@ func getCodec(name string) Codec {
 		return &Video4Linux{}
 	case (&VideoToolboxCodec{}).Name():
 		return &VideoToolboxCodec{}
-	default:
-		return &Libx264Codec{}
-	}
-}
+	case (&RkmppCodec{}).Name():
+		return &RkmppCodec{}
