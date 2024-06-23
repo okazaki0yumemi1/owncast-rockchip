@@ -28,10 +28,10 @@
 	<a href="https://github.com/owncast/owncast/issues">Report Bug</a>
 </p>
 
-##How it is different from original repo?
+## How it is different from original repo?
 This version is slightly modified to add hardware acceleration support for Rockchip (ARM64) devices, mainly RK35XX.
 
-###What do I need?
+### What do I need?
 ffmpeg compiled with Rockchip RKMPP. Check examples:
 [https://github.com/Pro%E2%80%A6ter/ffmpeg_rockchip.md](https://github.com/ProKn1fe/SBC_Playground/blob/master/ffmpeg_rockchip.md)
 https://github.com/JeffyCN/FFmpeg
@@ -39,7 +39,7 @@ https://github.com/nyanmisaka/ffmpeg-rockchip
 
 Also you need Go binaries to use ```sudo go run main.go``` command.
 
-###Some things that are worth mentioning:
+### Some things that are worth mentioning:
 1. I have no idea if it would work on RK3568 and less expensive systems-on-a-chip, but will work on RK3588S and RK3588,
 2. You can check iGPU media processing engine usage by running ```sudo watch -n 1 cat /sys/kernel/debug/rkrga/load``` (https://jellyfin.org/docs/general/administration/hardware-acceleration/rockchip/#verify-on-linux)
 3. You have to run Owncast as super user (use sudo) to use RKMPP, unfortunately. I have no idea how to bypass that, sorry.
