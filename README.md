@@ -43,7 +43,8 @@ Also you need Go binaries to use ```sudo go run main.go``` command.
 1. I have no idea if it would work on RK3568 and less expensive systems-on-a-chip, but will work on RK3588S and RK3588,
 2. You can check iGPU media processing engine usage by running ```sudo watch -n 1 cat /sys/kernel/debug/rkrga/load``` (https://jellyfin.org/docs/general/administration/hardware-acceleration/rockchip/#verify-on-linux)
 3. You have to run Owncast as super user (use sudo) to use RKMPP, unfortunately. I have no idea how to bypass that, sorry.
-4. I have 0 experience with Golang, sorry X2.
+4. Don't forget to pass path to compiled ffmpeg (with RKMPP support) in Admin interface 
+5. I have 0 experience with Golang, sorry X2.
 
 
 <!-- TABLE OF CONTENTS -->
